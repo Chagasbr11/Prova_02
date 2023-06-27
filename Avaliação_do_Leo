@@ -1,0 +1,103 @@
+package br.edu.univas;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Avaliacao_02 { 
+
+    static class Cliente {
+        private String nome;
+        private boolean pessoaJuridica;
+
+        public Cliente(String nome, boolean pessoaJuridica) {
+            this.nome = nome;
+            this.pessoaJuridica = pessoaJuridica;
+        }
+
+        public String getNome() {
+            return nome;
+        }
+
+        public boolean isPessoaJuridica() {
+            return pessoaJuridica;
+        }
+    }
+
+    static class Venda {
+        private Cliente cliente;
+        private String produto;
+        private final double valorUnitario;
+        private final int quantidade;
+
+        public Venda(Cliente cliente, String produto, double valorUnitario, int quantidade) {
+            this.cliente = cliente;
+            this.produto = produto;
+            this.valorUnitario = valorUnitario;
+            this.quantidade = quantidade;
+        }
+
+        public double getValorTotal() {
+            return valorUnitario * quantidade;
+        }
+    }
+
+    static class Aplicacao {
+        public static void main(String[] args) {
+            Scanner scanner = new Scanner(System.in);
+
+            // Criar lista de vendas
+            List<Venda> vendas = new ArrayList<>();
+
+            // Coletar informações de vendas
+            while (true) {
+                System.out.print("Informe o nome do cliente (ou 'sair' para encerrar): ");
+                String nomeCliente = scanner.nextLine();
+
+                if (nomeCliente.equalsIgnoreCase("sair")) {
+                    break;
+                }
+
+                System.out.print("O cliente é pessoa jurídica? (s/n): ");
+                boolean pessoaJuridica = scanner.nextLine().equalsIgnoreCase("s");
+
+                System.out.print("Informe o nome do produto: ");
+                String produto = scanner.nextLine();
+
+                System.out.print("Informe o valor unitário do produto: ");
+                double valorUnitario = scanner.nextDouble();
+
+                System.out.print("Informe a quantidade vendida: ");
+                int quantidade = scanner.nextInt();
+                scanner.nextLine(); // Limpar o buffer do scanner
+
+                // Criar cliente e venda
+                Cliente cliente = new Cliente(nomeCliente, pessoaJuridica);
+                Venda venda = new Venda(cliente, produto, valorUnitario, quantidade);
+
+                // Adicionar venda à lista
+                vendas.add(venda);
+
+                System.out.println("Venda registrada!\n");
+            }
+
+            // Calcular valores
+            double valorTotal = 0;
+            for (Venda venda : vendas) {
+                valorTotal += venda.getValorTotal();
+            }
+
+            double valorMedio = valorTotal / vendas.size();
+
+            // Exibir resultados
+            System.out.println("\n--- Relatório de Vendas ---");
+            System.out.println("Valor total vendido: R$" + valorTotal);
+            System.out.println("Valor médio por venda: R$" + valorMedio);
+
+            scanner.close();
+        }
+    }
+
+
+
+}
